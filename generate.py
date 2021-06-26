@@ -18,6 +18,7 @@ class QnA_Pair:
 
 def returnExam(questionList, answerList, difficultyList, numProblems, difficultyLevel):
     # first lets get all the indices of hard easy and medium problems
+
     easyQIndices = []
     medQIndices = []
     hardQIndices = []
@@ -56,6 +57,8 @@ def returnEasyExam(numProblems, easyQIndices, medQIndices, hardQIndices, questio
     pickMed = 0
     pickHard = 0
 
+
+    # numProb = type(int(numProblems.get()))
     numProb = numProblems
     while numProb >= 0:
         while numProb >= 0 and pickEasy != 6 and not isEmptyEasy:
@@ -127,7 +130,11 @@ def returnMedExam(numProblems, easyQIndices, medQIndices, hardQIndices, question
     pickMed = 0
     pickHard = 0
 
+
+
+    # numProb = type(int(numProblems.get()))
     numProb = numProblems
+
     while numProb >= 0:
 
         while numProb >= 0 and pickMed != 6 and not isEmptyMed:
@@ -194,7 +201,10 @@ def returnHardExam(numProblems, easyQIndices, medQIndices, hardQIndices, questio
     pickMed = 0
     pickHard = 0
 
+
+    # numProb = type(int(numProblems.get()))
     numProb = numProblems
+
     while numProb >= 0:
 
         while numProb >= 0 and pickHard != 6 and not isEmptyHard:

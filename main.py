@@ -166,7 +166,7 @@ inputCSVDifficulty = tk.StringVar()
 ttk.Label(window, text="Difficulty").grid(row=9, column=0)
 inputTextCSVDifficulty = ttk.Entry(window,width=40, textvariable=inputCSVDifficulty).grid(row=9, column=1, pady=20)
 
-inputNumQuestions = tk.StringVar()
+inputNumQuestions = tk.IntVar()
 ttk.Label(window, text="Number of Questions").grid(row=10, column=0)
 inputTextNumQuestions = ttk.Entry(window,width=40, textvariable=inputNumQuestions).grid(row=10, column=1, pady=20)
 
@@ -175,7 +175,7 @@ ttk.Label(window, text="New Text File Name").grid(row=11, column=0)
 inputTextFileName = ttk.Entry(window,width=40, textvariable=inputFileName).grid(row=11, column=1, pady=20)
 
 
-generatebtn = ttk.Button(window, text="Generate!", width=40, command= lambda: randomizeAndMakeFile(inputNumQuestions, inputCSVDifficulty, )
+generatebtn = ttk.Button(window, text="Generate!", width=40, command= lambda: randomizeAndMakeFile(inputNumQuestions.get(), inputCSVDifficulty.get(), inputFileName.get())
  ).grid(row=12, columnspan=2, pady=20)
 
 window.mainloop()
