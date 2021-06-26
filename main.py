@@ -6,6 +6,8 @@ from tkinter import ttk
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfile
 
+from tkinter import filedialog
+
 window = tk.Tk()
 csvInputFlag = False
 
@@ -113,20 +115,23 @@ def addToList():
     listOfDifficulties.append(inputDifficulty.get())
     showinfo("Message", f"Added: Q: " + str(inputQuestion.get()) + " and A: " + str(inputAnswer.get()) + " as Difficulty: " + str(inputDifficulty.get()))
 
-
 def openFile():
     file_path = askopenfile(mode='r', filetypes=[('CSV Files', '*.csv')]).name
     openFile.var = file_path
+    arrayOfComponentsOfFilePath = file_path.split("/")
+    fileUserEntered = arrayOfComponentsOfFilePath[(len(arrayOfComponentsOfFilePath)-1)]
     if file_path is not None:
         addCSVContentToLists(file_path)
-        csvInputFlag = True
-        flagLabel.config(text="Success!")
-        flagLabel = ttk.Label(window, text="Success!").grid(row=8, column=1)
-
+        # csvInputFlag = True
+        # print("This is the flag:" flagLabel.text)
+        # flagLabel.set('value')
+        # flagLabel = ttk.Label(window, text="Success!").grid(row=8, column=1)
+        my_path.set("You entered: " + fileUserEntered)
         print("Ran CSV function\n")
         print(listOfQuestions)
         print(listOfAnswers)
         print(listOfDifficulties)
+
 
 
 w_height = 700
@@ -156,11 +161,14 @@ addToListbtn = ttk.Button(window, text="Add to list", width=40, command= lambda:
 ttk.Label(window, text="For Adding a CSV FIle:").grid(row=6, column=0)
 
 ttk.Label(window, text="CSV").grid(row=7, column=0)
-
+my_path = tk.StringVar()
+my_path.set("No Input Yet")
+flagLabel = tk.Label(textvariable = my_path)
+flagLabel.grid(row = 8, column = 1)
 #flagLabel = ttk.Label(window, text=("No Value Chosen" if (csvInputFlag is False) else "Success!")).grid(row=8, column=1)#won't change to success even after adding CSV
+# flagLabel = ttk.Label(window, text="No CSV File Chosen").grid(row=8, column=1)
 
 openFilebtn = ttk.Button(window, text="Choose from Computer", width=40, command=openFile).grid(row=7, column=1, pady=20)
-flagLabel = ttk.Label(window, text="No CSV File Chosen").grid(row=8, column=1)
 
 inputCSVDifficulty = tk.StringVar()
 ttk.Label(window, text="Difficulty").grid(row=9, column=0)
