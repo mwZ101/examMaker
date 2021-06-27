@@ -16,7 +16,7 @@ class QnA_Pair:
 # returns: a list of question and answer pair
 # requires questionlist, answerList, difficultyList to be of the same length
 
-def returnExam(questionList, answerList, difficultyList, numProblems, difficultyLevel):
+def returnExam(questionList, answerList, difficultyList, numEasyProblems, numMedProblems, numHardProblems):
     # first lets get all the indices of hard easy and medium problems
 
     easyQIndices = []
@@ -31,12 +31,13 @@ def returnExam(questionList, answerList, difficultyList, numProblems, difficulty
         else:
             hardQIndices.append(i)
 
-    if difficultyLevel == "easy":
-        return returnEasyExam(numProblems, easyQIndices, medQIndices, hardQIndices, questionList, answerList)
-    elif difficultyLevel == "medium":
-        return returnMedExam(numProblems, easyQIndices, medQIndices, hardQIndices, questionList, answerList)
-    else:
-        return returnHardExam(numProblems, easyQIndices, medQIndices, hardQIndices, questionList, answerList)
+    result = []
+
+    result+=returnEasyExam(numEasyProblems, easyQIndices, medQIndices, hardQIndices, questionList, answerList)
+    result+=returnMedExam(numMedProblems, easyQIndices, medQIndices, hardQIndices, questionList, answerList)
+    result+=returnHardExam(numHardProblems, easyQIndices, medQIndices, hardQIndices, questionList, answerList)
+
+    return result
 
 
 # ==============================================================================
@@ -59,7 +60,7 @@ def returnEasyExam(numProblems, easyQIndices, medQIndices, hardQIndices, questio
 
 
     # numProb = type(int(numProblems.get()))
-    numProb = numProblems
+    numProb = numProblems - 1
     while numProb >= 0:
         while numProb >= 0 and pickEasy != 6 and not isEmptyEasy:
             randomNum = random.randrange(0, len(easyQIndices))
@@ -133,7 +134,7 @@ def returnMedExam(numProblems, easyQIndices, medQIndices, hardQIndices, question
 
 
     # numProb = type(int(numProblems.get()))
-    numProb = numProblems
+    numProb = numProblems - 1
 
     while numProb >= 0:
 
@@ -203,7 +204,7 @@ def returnHardExam(numProblems, easyQIndices, medQIndices, hardQIndices, questio
 
 
     # numProb = type(int(numProblems.get()))
-    numProb = numProblems
+    numProb = numProblems - 1
 
     while numProb >= 0:
 
