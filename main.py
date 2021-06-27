@@ -5,6 +5,7 @@ import generate as gen
 from tkinter import ttk
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfile
+from tkinter.filedialog import asksaveasfile
 
 from tkinter import filedialog
 
@@ -41,16 +42,21 @@ def addCSVContentToLists(csvFilePath):
 #          of size n in the format q1, a1, q2, a2, ... qn, an
 
 def qaListToText(qaList, fileName):
+
+    if fileName.endswith(".txt"):
+        name = fileName.split(".txt")
+        fileName = name[0]
+
     with open(fileName + ".txt", "w") as file:
       length = len(qaList) - 1
       for qaPair in qaList:
-        file.write(str(qaPair.question)+", ")
+        file.write(str(qaPair.question)+"\n")
         print(str(qaPair.question))
         if qaList.index(qaPair) == length:
           file.write(str(qaPair.answer))
           print(str(qaPair.answer))
         else:
-          file.write(str(qaPair.answer)+", ")
+          file.write(str(qaPair.answer)+"\n")
           print(str(qaPair.answer))
       file.close()
 
@@ -66,12 +72,12 @@ def qadListToText(qaList, diffList, fileName):
     with open(fileName+".txt", "w") as file:
       length = len(qaList) - 1
       for (qaPair, d) in zip(qaList, diffList):
-        file.write(str(qaPair[0])+", ")
-        file.write(str(qaPair[1])+", ")
+        file.write(str(qaPair[0])+"\n")
+        file.write(str(qaPair[1])+"\n")
         if qaList.index(qaPair) == length:
           file.write(str(d))
         else:
-          file.write(str(d)+", ")
+          file.write(str(d)+"\n")
       file.close()
 
 """
@@ -83,7 +89,7 @@ textFilePath: a string of the path of the text file
 def addTextContentToLists(textFilePath):
     try:
         with open(textFilePath, "r") as file:
-            fileTextList = file.read().split(",")
+            fileTextList = file.read().split("\n")
 
             listOfQuestions.extend(fileTextList[0::3])
             listOfAnswers.extend(fileTextList[1::3])
@@ -101,13 +107,15 @@ numQuestions: an integer for the number of questions that the user wants
 difficultyLevel: a string for the user's chosen difficulty level, in lowercase letters
 fileName: a string for the user's chosen text file name
 """
-def randomizeAndMakeFile(numQuestions, difficultyLevel, fileName):
+def randomizeAndMakeFile(numQuestions, difficultyLevel):
     print("Generating exam...")
     qaList = gen.returnExam(listOfQuestions, listOfAnswers, listOfDifficulties, numQuestions, difficultyLevel)
     print("Finished Generating Exam...")
 
-    qaListToText(qaList, fileName)
+    filePath = asksaveasfile(mode='w', filetypes=[('Text Document', '*.txt')], defaultextension=[('Text Document', '*.txt')])
 
+    qaListToText(qaList, filePath.name)
+    ttk.Label(window, text="Successfully saved the text file!").grid(row=13, columnspan=20)
 
 def addToList():
     listOfQuestions.append(inputQuestion.get())
@@ -141,13 +149,13 @@ window.geometry(str(w_width) + "x" + str(w_height))
 window.title("Question Randomizer")
 
 
-title = ttk.Label(window, text="Question Randomizer", font=("Times New Roman", 30)).grid(row=0,columnspan=2)
+title = ttk.Label(window, text="Question Randomizer", font=("Times New Roman", 30)).grid(row=0, columnspan=2, pady=20)
 
 inputQuestion = tk.StringVar()
 inputAnswer = tk.StringVar()
 inputDifficulty = tk.StringVar()
 
-ttk.Label(window, text="For Manually Adding: ").grid(row=1, column=0)
+ttk.Label(window, text="For Manually Adding: ").grid(row=1, column=0, padx=20)
 ttk.Label(window, text="Question").grid(row=2, column=0)
 ttk.Label(window, text="Answer").grid(row=3, column=0)
 ttk.Label(window, text="Difficulty").grid(row=4, column=0)
@@ -158,7 +166,7 @@ inputText3 = ttk.Entry(window,width=40, textvariable=inputDifficulty).grid(row=4
 
 addToListbtn = ttk.Button(window, text="Add to list", width=40, command= lambda: addToList()).grid(row=5, columnspan=2, pady=20)
 
-ttk.Label(window, text="For Adding a CSV FIle:").grid(row=6, column=0)
+ttk.Label(window, text="For Adding a CSV FIle:").grid(row=6, column=0, padx=20)
 
 ttk.Label(window, text="CSV").grid(row=7, column=0)
 my_path = tk.StringVar()
@@ -178,12 +186,9 @@ inputNumQuestions = tk.IntVar()
 ttk.Label(window, text="Number of Questions").grid(row=10, column=0)
 inputTextNumQuestions = ttk.Entry(window,width=40, textvariable=inputNumQuestions).grid(row=10, column=1, pady=20)
 
-inputFileName = tk.StringVar()
-ttk.Label(window, text="New Text File Name").grid(row=11, column=0)
-inputTextFileName = ttk.Entry(window,width=40, textvariable=inputFileName).grid(row=11, column=1, pady=20)
+generatebtn = ttk.Button(window, text="Generate and Save to", width=40, command= lambda: randomizeAndMakeFile(inputNumQuestions.get(), inputCSVDifficulty.get())
+ ).grid(row=11, columnspan=2, pady=20)
 
 
-generatebtn = ttk.Button(window, text="Generate!", width=40, command= lambda: randomizeAndMakeFile(inputNumQuestions.get(), inputCSVDifficulty.get(), inputFileName.get())
- ).grid(row=12, columnspan=2, pady=20)
 
 window.mainloop()
